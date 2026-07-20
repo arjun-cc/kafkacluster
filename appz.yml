@@ -1,0 +1,67 @@
+app:
+        name: Kafka
+        code: kafka
+        notify: appzdev@cloudbourne.co
+
+    build:
+        version: 4.0
+        env: PROD
+        build_file: none
+        output_files: output/*.zip
+        image_template: kafka-4.0
+
+    deploy:
+        context: tradeideas/PROD
+        type: statefulset
+        replicas: 3
+        #ingress: none
+        #resources: x-large
+        port:
+        - 9092
+        - 9093
+        - 9094
+        - 9308
+        - 9404
+        nodeSelector:
+          nodepool: kafka
+        tolerations:
+          - key: nodepool
+            operator: Equal
+            value: kafka
+            effect: NoSchedule
+
+    volumes:
+      - claim: kafka-data
+        class: linode-block-storage
+        mount: /appz/data
+        name: data
+        size: 100Gi
+        matchLabels: false
+
+    properties:
+        KAFKA_BROKERS: "0@kafka-cluster-4-0-0.kafka-cluster-4-0:9093,1@kafka-cluster-4-0-1.kafka-cluster-4-0:9093,2@kafka-cluster-4-0-2.kafka-cluster-4-0:9093"
+        KAFKA_EXPORTER_BROKERS: "0@kafka-cluster-4-0-0.kafka-cluster-4-0:9092,1@kafka-cluster-4-0-1.kafka-cluster-4-0:9092,2@kafka-cluster-4-0-2.kafka-cluster-4-0:9092"
+        KAFKA_REPLICATION_FACTOR: 3
+        KAFKA_MIN_ISR: 2
+        KAFKA_CLUSTER_ID:
+          vault: KAFKA_CLUSTER_ID
+        KAFKA_CONTROLLER_UUID_0:
+          vault: KAFKA_CONTROLLER_UUID_0
+        KAFKA_CONTROLLER_UUID_1:
+          vault: KAFKA_CONTROLLER_UUID_1
+        KAFKA_CONTROLLER_UUID_2:
+          vault: KAFKA_CONTROLLER_UUID_2
+        EXTERNAL_IP: 192.168.1.140
+        EXTERNAL_PORT_0: 32001
+        EXTERNAL_PORT_1: 32002
+        EXTERNAL_PORT_2: 32003
+        KAFKA_SERVER_OPTS: -javaagent:/opt/bitnami/kafka/jmx_prometheus_javaagent.jar=9404:/opt/bitnami/kafka/config/jmx-kafka.yaml
+        KAFKA_NUM_NETWORK_THREADS: 4
+        KAFKA_NUM_IO_THREADS: 16
+        KAFKA_SOCKET_SEND_BUFFER_BYTES: 1048576
+        KAFKA_SOCKET_RECEIVE_BUFFER_BYTES: 1048576
+        KAFKA_HEAP_OPTS: "-Xmx4g -Xms4g"
+        #KAFKA_SASL_USERNAME: admin
+        #KAFKA_SASL_PASSWORD: admin
+        #KAFKA_SASL_MECHANISM: PLAIN
+        revision : 20
