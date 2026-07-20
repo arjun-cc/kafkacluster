@@ -4,11 +4,11 @@ app:
   notify: appzdev@cloudbourne.co
 
 build:
-  version: 4.0
+  version: 4.3
   env: PROD
   build_file: none
   output_files: output/*.zip
-  image_template: kafka-4.0
+  image_template: kafkacluster-4.3
 
 deploy:
   context: arjun-cc/DEV
