@@ -5,7 +5,7 @@ app:
 
 build:
   version: 4.3
-  env: PROD
+  env: DEV
   build_file: none
   output_files: output/*.zip
   image_template: kafkacluster-4.3
