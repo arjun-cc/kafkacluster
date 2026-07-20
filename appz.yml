@@ -30,13 +30,13 @@ app:
             value: kafka
             effect: NoSchedule
 
-    volumes:
-      - claim: kafka-data
-        class: linode-block-storage
-        mount: /appz/data
-        name: data
-        size: 100Gi
-        matchLabels: false
+  volumes:
+    - claim: kafka-data
+      class: microk8s-hostpath
+      mount: /appz/data
+      name: data
+      size: 100Gi
+      matchLabels: false
 
     properties:
         KAFKA_BROKERS: "0@kafka-cluster-4-3-0.kafka-cluster-4-3:9093,1@kafka-cluster-4-3-1.kafka-cluster-4-3:9093,2@kafka-cluster-4-3-2.kafka-cluster-4-3:9093"
