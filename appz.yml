@@ -22,13 +22,6 @@ deploy:
     - 9094
     - 9308
     - 9404
-  nodeSelector:
-    nodepool: kafka
-  tolerations:
-    - key: nodepool
-      operator: Equal
-      value: kafka
-      effect: NoSchedule
 
 volumes:
   - claim: kafka-data
