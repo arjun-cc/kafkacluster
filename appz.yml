@@ -54,4 +54,4 @@ properties:
   #KAFKA_SASL_USERNAME: admin
   #KAFKA_SASL_PASSWORD: admin
   #KAFKA_SASL_MECHANISM: PLAIN
-  revision: 25
+  revision: 20
